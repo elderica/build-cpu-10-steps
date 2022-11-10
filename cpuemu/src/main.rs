@@ -20,21 +20,21 @@ enum OpCode {
 }
 
 #[allow(dead_code)]
-const REG0: usize = 0;
+const REG0: RegisterIndex = 0;
 #[allow(dead_code)]
-const REG1: usize = 1;
+const REG1: RegisterIndex = 1;
 #[allow(dead_code)]
-const REG2: usize = 2;
+const REG2: RegisterIndex = 2;
 #[allow(dead_code)]
-const REG3: usize = 3;
+const REG3: RegisterIndex = 3;
 #[allow(dead_code)]
-const REG4: usize = 4;
+const REG4: RegisterIndex = 4;
 #[allow(dead_code)]
-const REG5: usize = 5;
+const REG5: RegisterIndex = 5;
 #[allow(dead_code)]
-const REG6: usize = 6;
+const REG6: RegisterIndex = 6;
 #[allow(dead_code)]
-const REG7: usize = 7;
+const REG7: RegisterIndex = 7;
 
 type Address = u16;
 type Word = u16;
