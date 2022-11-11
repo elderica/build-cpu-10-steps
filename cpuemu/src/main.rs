@@ -85,27 +85,28 @@ impl Chip {
         let rb = op_reg_b(ir);
         let addr = op_addr(ir);
         let data = op_data(ir);
+        use OpCode::*;
         match op_code(ir) {
-            OpCode::MOV => self.reg[ra] = self.reg[rb],
-            OpCode::ADD => self.reg[ra] += self.reg[rb],
-            OpCode::SUB => self.reg[ra] -= self.reg[rb],
-            OpCode::AND => self.reg[ra] &= self.reg[rb],
-            OpCode::OR => self.reg[ra] |= self.reg[rb],
-            OpCode::SL => self.reg[ra] <<= 1,
-            OpCode::SR => self.reg[ra] >>= 1,
-            OpCode::SRA => self.reg[ra] = (self.reg[ra] & 0x8000) | (self.reg[ra] >> 1),
-            OpCode::LDL => self.reg[ra] = (self.reg[ra] & 0xff00) | (data & 0x00ff),
-            OpCode::LDH => self.reg[ra] = (data << 8) | (self.reg[ra] & 0x00ff),
-            OpCode::CMP => self.flag_eq = self.reg[ra] == self.reg[rb],
-            OpCode::JE => {
+            MOV => self.reg[ra] = self.reg[rb],
+            ADD => self.reg[ra] += self.reg[rb],
+            SUB => self.reg[ra] -= self.reg[rb],
+            AND => self.reg[ra] &= self.reg[rb],
+            OR => self.reg[ra] |= self.reg[rb],
+            SL => self.reg[ra] <<= 1,
+            SR => self.reg[ra] >>= 1,
+            SRA => self.reg[ra] = (self.reg[ra] & 0x8000) | (self.reg[ra] >> 1),
+            LDL => self.reg[ra] = (self.reg[ra] & 0xff00) | (data & 0x00ff),
+            LDH => self.reg[ra] = (data << 8) | (self.reg[ra] & 0x00ff),
+            CMP => self.flag_eq = self.reg[ra] == self.reg[rb],
+            JE => {
                 if self.flag_eq {
                     self.pc = op_addr(ir)
                 }
             }
-            OpCode::JMP => self.pc = op_addr(ir),
-            OpCode::LD => self.reg[ra] = self.ram[addr as usize],
-            OpCode::ST => self.ram[addr as usize] = self.reg[ra],
-            OpCode::HLT => (),
+            JMP => self.pc = op_addr(ir),
+            LD => self.reg[ra] = self.ram[addr as usize],
+            ST => self.ram[addr as usize] = self.reg[ra],
+            HLT => (),
         }
     }
 }
@@ -221,23 +222,24 @@ fn hlt() -> Instruction {
 }
 
 fn op_code(ir: Instruction) -> OpCode {
+    use OpCode::*;
     match ir >> 11 {
-        0 => OpCode::MOV,
-        1 => OpCode::ADD,
-        2 => OpCode::SUB,
-        3 => OpCode::AND,
-        4 => OpCode::OR,
-        5 => OpCode::SL,
-        6 => OpCode::SR,
-        7 => OpCode::SRA,
-        8 => OpCode::LDL,
-        9 => OpCode::LDH,
-        10 => OpCode::CMP,
-        11 => OpCode::JE,
-        12 => OpCode::JMP,
-        13 => OpCode::LD,
-        14 => OpCode::ST,
-        15 => OpCode::HLT,
+        0 => MOV,
+        1 => ADD,
+        2 => SUB,
+        3 => AND,
+        4 => OR,
+        5 => SL,
+        6 => SR,
+        7 => SRA,
+        8 => LDL,
+        9 => LDH,
+        10 => CMP,
+        11 => JE,
+        12 => JMP,
+        13 => LD,
+        14 => ST,
+        15 => HLT,
         _ => panic!("invalid opcode"),
     }
 }
