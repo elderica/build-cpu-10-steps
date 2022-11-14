@@ -9,9 +9,8 @@ module top (
 
     assign led_output = ~led;
 
-    always_ff @ (posedge clk) begin
-        led[0] <= ~button_s1;
-        led[5] <= ~button_s2;
+    always_ff @ (posedge button_s1) begin
+        led <= led + 'd1;
     end
 endmodule
 
