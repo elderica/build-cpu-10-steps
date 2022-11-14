@@ -1,25 +1,18 @@
 module top (
     input wire clk,
+    input wire button_s1,
+    input wire button_s2,
     output wire [5:0] led_output
 );
 
     logic [5:0] led = 'd0;
-    logic overflow;
 
     assign led_output = ~led;
 
     always_ff @ (posedge clk) begin
-        if (overflow) begin
-            led <= led +'d1;
-        end
+        led[0] <= ~button_s1;
+        led[5] <= ~button_s2;
     end
-
-    timer #(
-        .COUNT_MAX (13500000)
-    ) inst_0 (
-        .clk    (clk),
-        .overflow (overflow)
-    );
 endmodule
 
 `default_nettype wire
